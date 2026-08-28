@@ -6,6 +6,8 @@
 
 ## 📸 प्रोजेक्ट प्रिव्ह्यू (Project Preview)
 
+![CyberShield Preview](./pass.png)
+
 ![CyberShield Preview](./preview.png)
 
 ---
