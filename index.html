@@ -57,34 +57,27 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen antialiased selection:bg-cyan-500 selection:text-slate-950 flex items-center justify-center p-4 relative overflow-hidden font-sans">
 
-  <!-- Interactive Canvas Particle Field (Moving Digital Cyber Lights) -->
   <canvas id="cyberCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
 
-  <!-- High-Tech Background Grid -->
   <div class="fixed inset-0 vault-grid pointer-events-none z-0"></div>
 
-  <!-- Dynamic Glowing Cyan Light Orbs -->
   <div class="fixed top-0 left-0 w-[450px] h-[450px] bg-cyan-500/25 rounded-full blur-[130px] pointer-events-none orb-1 z-0"></div>
   <div class="fixed top-0 left-0 w-[500px] h-[500px] bg-teal-400/20 rounded-full blur-[140px] pointer-events-none orb-2 z-0"></div>
   <div class="fixed top-0 left-0 w-[400px] h-[400px] bg-sky-400/20 rounded-full blur-[120px] pointer-events-none orb-3 z-0"></div>
 
-  <!-- Rotating Digital Safe Dial Radar -->
   <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0 opacity-20">
     <div class="w-[580px] h-[580px] border-2 border-dashed border-cyan-400 rounded-full animate-spin-slow flex items-center justify-center shadow-[0_0_50px_rgba(6,182,212,0.3)]">
       <div class="w-[420px] h-[420px] border border-teal-300/40 rounded-full border-t-transparent"></div>
     </div>
   </div>
 
-  <!-- Security Safe Container Card -->
   <main class="w-full max-w-lg border-2 border-cyan-400/40 bg-slate-900/85 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 shadow-[0_0_70px_rgba(6,182,212,0.25)] relative z-10 space-y-7">
     
-    <!-- Neon Corner Bolts -->
     <div class="absolute top-3 left-3 w-2.5 h-2.5 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>
     <div class="absolute top-3 right-3 w-2.5 h-2.5 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>
     <div class="absolute bottom-3 left-3 w-2.5 h-2.5 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>
     <div class="absolute bottom-3 right-3 w-2.5 h-2.5 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>
 
-    <!-- Header / Security Safe Emblem -->
     <header class="space-y-2 text-center">
       <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-cyan-950/80 border border-cyan-400/50 shadow-[0_0_25px_rgba(6,182,212,0.4)] mb-1 text-cyan-300">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -99,7 +92,6 @@
       </p>
     </header>
 
-    <!-- Password Analyzer -->
     <section class="space-y-3 bg-slate-950/70 border border-cyan-500/30 p-4 rounded-xl shadow-inner">
       <div class="flex justify-between items-center text-xs font-mono uppercase tracking-wider text-slate-300">
         <label for="password-input" class="flex items-center gap-1.5">
@@ -125,7 +117,6 @@
       </div>
     </section>
 
-    <!-- Key Generator -->
     <section class="space-y-4">
       <button
         id="generate-btn"
@@ -213,7 +204,7 @@
     }
     render();
 
-    // Passkey Logic
+    // DOM Elements
     const passwordInput = document.getElementById('password-input');
     const strengthLabel = document.getElementById('strength-label');
     const meterContainer = document.getElementById('meter-container');
@@ -223,6 +214,7 @@
     const generatedInput = document.getElementById('generated-input');
     const copyBtn = document.getElementById('copy-btn');
 
+    // Password Evaluation Flow
     passwordInput.addEventListener('input', (e) => {
       const pwd = e.target.value;
       if (!pwd) {
@@ -258,17 +250,32 @@
       meterContainer.classList.remove('hidden');
     });
 
+    // Unique Random Generator (Guaranteed New Output)
+    let previousGenerated = '';
+
     generateBtn.addEventListener('click', () => {
       const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
-      const array = new Uint32Array(16);
-      crypto.getRandomValues(array);
-      const pwd = Array.from(array, (x) => chars[x % chars.length]).join('');
+      const currentInput = passwordInput.value.trim();
+      let pwd = '';
 
+      do {
+        const array = new Uint32Array(16);
+        crypto.getRandomValues(array);
+        pwd = Array.from(array, (x) => chars[x % chars.length]).join('');
+      } while (pwd === currentInput || pwd === previousGenerated);
+
+      previousGenerated = pwd;
       generatedInput.value = pwd;
+
+      // Auto-populate analyzer field to update strength rating
+      passwordInput.value = pwd;
+      passwordInput.dispatchEvent(new Event('input'));
+
       generatedBox.classList.remove('hidden');
       generatedBox.classList.add('flex');
     });
 
+    // Copy to Clipboard Action
     copyBtn.addEventListener('click', async () => {
       if (!generatedInput.value) return;
       await navigator.clipboard.writeText(generatedInput.value);
