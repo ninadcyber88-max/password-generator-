@@ -1,4 +1,48 @@
 <!DOCTYPE html>
+<!-- Password Input -->
+
+<div class="password-checker">
+
+    <label for="inputPassword">
+        🔍 तुमचा Password तपासा
+    </label>
+
+    <div class="input-password-box">
+
+        <input
+            type="password"
+            id="inputPassword"
+            placeholder="तुमचा Password येथे टाका"
+            autocomplete="off"
+        >
+
+        <button
+            id="togglePassword"
+            type="button"
+        >
+            👁️
+        </button>
+
+    </div>
+
+    <div class="strength-container">
+
+        <div class="strength-bar">
+
+            <div
+                id="inputStrengthBar"
+                class="strength-progress"
+            ></div>
+
+        </div>
+
+        <span id="inputStrengthText">
+            Password Strength
+        </span>
+
+    </div>
+
+</div>
 <html lang="mr">
 <head>
     <meta charset="UTF-8">
