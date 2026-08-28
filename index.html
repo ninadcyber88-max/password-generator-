@@ -6,85 +6,104 @@
   <title>CyberShield // Security Vault</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Security Safe Dial Animation & Grid */
+    /* Security Safe Grid */
     .vault-grid {
       background-size: 40px 40px;
       background-image: 
-        linear-gradient(to right, rgba(6, 182, 212, 0.05) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(6, 182, 212, 0.05) 1px, transparent 1px);
+        linear-gradient(to right, rgba(6, 182, 212, 0.07) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(6, 182, 212, 0.07) 1px, transparent 1px);
     }
-    .scanline {
-      background: linear-gradient(
-        to bottom,
-        rgba(255,255,255,0),
-        rgba(6, 182, 212, 0.08) 50%,
-        rgba(255,255,255,0)
-      );
-      background-size: 100% 8px;
+    
+    /* Moving Floating Cyan Light Orbs */
+    @keyframes float-light-1 {
+      0% { transform: translate(-10%, -10%) scale(1); opacity: 0.25; }
+      33% { transform: translate(60vw, 30vh) scale(1.3); opacity: 0.5; }
+      66% { transform: translate(20vw, 70vh) scale(0.9); opacity: 0.3; }
+      100% { transform: translate(-10%, -10%) scale(1); opacity: 0.25; }
     }
-    @keyframes pulse-slow {
-      0%, 100% { opacity: 0.15; transform: scale(1); }
-      50% { opacity: 0.3; transform: scale(1.05); }
+
+    @keyframes float-light-2 {
+      0% { transform: translate(80vw, 80vh) scale(1.1); opacity: 0.3; }
+      33% { transform: translate(20vw, 40vh) scale(0.8); opacity: 0.55; }
+      66% { transform: translate(70vw, 10vh) scale(1.4); opacity: 0.25; }
+      100% { transform: translate(80vw, 80vh) scale(1.1); opacity: 0.3; }
     }
-    .animate-pulse-slow {
-      animation: pulse-slow 6s ease-in-out infinite;
+
+    @keyframes float-light-3 {
+      0% { transform: translate(50vw, -10vh) scale(0.9); opacity: 0.2; }
+      50% { transform: translate(-10vw, 50vh) scale(1.35); opacity: 0.45; }
+      100% { transform: translate(50vw, -10vh) scale(0.9); opacity: 0.2; }
     }
+
+    .orb-1 {
+      animation: float-light-1 18s ease-in-out infinite;
+    }
+    .orb-2 {
+      animation: float-light-2 22s ease-in-out infinite;
+    }
+    .orb-3 {
+      animation: float-light-3 15s ease-in-out infinite;
+    }
+
+    /* Dial Rotation */
     @keyframes spin-slow {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
     .animate-spin-slow {
-      animation: spin-slow 25s linear infinite;
+      animation: spin-slow 28s linear infinite;
     }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen antialiased selection:bg-cyan-500 selection:text-slate-950 flex items-center justify-center p-4 relative overflow-hidden font-sans">
 
-  <!-- Digital Vault / Security Safe Background Layer -->
+  <!-- Interactive Canvas Particle Field (Moving Digital Cyber Lights) -->
+  <canvas id="cyberCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+  <!-- High-Tech Background Grid -->
   <div class="fixed inset-0 vault-grid pointer-events-none z-0"></div>
-  <div class="fixed inset-0 scanline pointer-events-none z-0 opacity-40"></div>
 
-  <!-- Ambient Light Orbs -->
-  <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-900/20 rounded-full blur-[140px] pointer-events-none animate-pulse-slow z-0"></div>
-  <div class="fixed -top-24 -left-24 w-96 h-96 bg-teal-500/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
-  <div class="fixed -bottom-24 -right-24 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+  <!-- Dynamic Glowing Cyan Light Orbs -->
+  <div class="fixed top-0 left-0 w-[450px] h-[450px] bg-cyan-500/25 rounded-full blur-[130px] pointer-events-none orb-1 z-0"></div>
+  <div class="fixed top-0 left-0 w-[500px] h-[500px] bg-teal-400/20 rounded-full blur-[140px] pointer-events-none orb-2 z-0"></div>
+  <div class="fixed top-0 left-0 w-[400px] h-[400px] bg-sky-400/20 rounded-full blur-[120px] pointer-events-none orb-3 z-0"></div>
 
-  <!-- Rotating Digital Safe Dial Graphic -->
-  <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0 opacity-10">
-    <div class="w-[500px] h-[500px] border-2 border-dashed border-cyan-400 rounded-full animate-spin-slow flex items-center justify-center">
-      <div class="w-[380px] h-[380px] border border-teal-300/40 rounded-full border-t-transparent"></div>
+  <!-- Rotating Digital Safe Dial Radar -->
+  <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0 opacity-20">
+    <div class="w-[580px] h-[580px] border-2 border-dashed border-cyan-400 rounded-full animate-spin-slow flex items-center justify-center shadow-[0_0_50px_rgba(6,182,212,0.3)]">
+      <div class="w-[420px] h-[420px] border border-teal-300/40 rounded-full border-t-transparent"></div>
     </div>
   </div>
 
-  <!-- Main Security Safe Card -->
-  <main class="w-full max-w-lg border-2 border-cyan-500/30 bg-slate-900/90 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 shadow-[0_0_60px_rgba(6,182,212,0.15)] relative z-10 space-y-7">
+  <!-- Security Safe Container Card -->
+  <main class="w-full max-w-lg border-2 border-cyan-400/40 bg-slate-900/85 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 shadow-[0_0_70px_rgba(6,182,212,0.25)] relative z-10 space-y-7">
     
-    <!-- Vault Bolts (Corner Accents) -->
-    <div class="absolute top-3 left-3 w-2 h-2 rounded-full bg-cyan-400/60 shadow-[0_0_8px_rgba(34,211,238,0.8)]"></div>
-    <div class="absolute top-3 right-3 w-2 h-2 rounded-full bg-cyan-400/60 shadow-[0_0_8px_rgba(34,211,238,0.8)]"></div>
-    <div class="absolute bottom-3 left-3 w-2 h-2 rounded-full bg-cyan-400/60 shadow-[0_0_8px_rgba(34,211,238,0.8)]"></div>
-    <div class="absolute bottom-3 right-3 w-2 h-2 rounded-full bg-cyan-400/60 shadow-[0_0_8px_rgba(34,211,238,0.8)]"></div>
+    <!-- Neon Corner Bolts -->
+    <div class="absolute top-3 left-3 w-2.5 h-2.5 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>
+    <div class="absolute top-3 right-3 w-2.5 h-2.5 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>
+    <div class="absolute bottom-3 left-3 w-2.5 h-2.5 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>
+    <div class="absolute bottom-3 right-3 w-2.5 h-2.5 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>
 
-    <!-- Header / Safe Dial Emblem -->
+    <!-- Header / Security Safe Emblem -->
     <header class="space-y-2 text-center">
-      <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-cyan-950/80 border border-cyan-400/40 shadow-[0_0_20px_rgba(6,182,212,0.3)] mb-1 text-cyan-400">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-cyan-950/80 border border-cyan-400/50 shadow-[0_0_25px_rgba(6,182,212,0.4)] mb-1 text-cyan-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="12" cy="12" r="3"/><line x1="12" x2="12" y1="3" y2="6"/><line x1="12" x2="12" y1="18" y2="21"/><line x1="3" x2="6" y1="12" y2="12"/><line x1="18" x2="21" y1="12" y2="12"/>
         </svg>
       </div>
-      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-widest uppercase font-mono bg-gradient-to-r from-teal-300 via-cyan-400 to-sky-400 bg-clip-text text-transparent drop-shadow-[0_0_25px_rgba(34,211,238,0.5)]">
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-widest uppercase font-mono bg-gradient-to-r from-teal-300 via-cyan-300 to-sky-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(34,211,238,0.6)]">
         CyberShield
       </h1>
-      <p class="text-xs text-cyan-300/60 font-mono tracking-widest uppercase">
+      <p class="text-xs text-cyan-300/70 font-mono tracking-widest uppercase">
         [ SYSTEM ACCESS // VAULT PROTOCOL ]
       </p>
     </header>
 
-    <!-- Section 1: Password Analyzer -->
-    <section class="space-y-3 bg-slate-950/60 border border-cyan-500/20 p-4 rounded-xl shadow-inner">
-      <div class="flex justify-between items-center text-xs font-mono uppercase tracking-wider text-slate-400">
+    <!-- Password Analyzer -->
+    <section class="space-y-3 bg-slate-950/70 border border-cyan-500/30 p-4 rounded-xl shadow-inner">
+      <div class="flex justify-between items-center text-xs font-mono uppercase tracking-wider text-slate-300">
         <label for="password-input" class="flex items-center gap-1.5">
-          <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+          <span class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,1)] animate-ping"></span>
           Input Passkey
         </label>
         <span id="strength-label" class="font-bold hidden"></span>
@@ -94,7 +113,7 @@
         id="password-input"
         type="text"
         placeholder="Enter passkey to audit..."
-        class="w-full px-4 py-3 bg-slate-900/90 border border-slate-700/80 rounded-lg text-cyan-200 placeholder-slate-600 text-sm font-mono focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition shadow-inner"
+        class="w-full px-4 py-3 bg-slate-900/90 border border-slate-700/90 rounded-lg text-cyan-200 placeholder-slate-600 text-sm font-mono focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition shadow-inner"
         autocomplete="off"
         spellcheck="false"
       />
@@ -106,12 +125,12 @@
       </div>
     </section>
 
-    <!-- Section 2: Safe Key Generator -->
+    <!-- Key Generator -->
     <section class="space-y-4">
       <button
         id="generate-btn"
         type="button"
-        class="w-full py-3.5 px-4 bg-gradient-to-r from-teal-500 via-cyan-500 to-sky-500 hover:from-teal-400 hover:to-sky-400 text-slate-950 font-mono font-bold text-sm tracking-wider uppercase rounded-xl transition-all duration-200 shadow-[0_0_25px_rgba(6,182,212,0.35)] active:scale-[0.98] flex items-center justify-center gap-2"
+        class="w-full py-3.5 px-4 bg-gradient-to-r from-teal-400 via-cyan-500 to-sky-500 hover:from-teal-300 hover:to-sky-400 text-slate-950 font-mono font-bold text-sm tracking-wider uppercase rounded-xl transition-all duration-200 shadow-[0_0_30px_rgba(6,182,212,0.45)] active:scale-[0.98] flex items-center justify-center gap-2"
       >
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 2l-2 2m-1-1l-3 3 1.5 1.5M19 5l-2.5 2.5m-1.5 1.5L9 14l-4 4 2 2 4-4 4.5-4.5"/>
@@ -119,7 +138,7 @@
         Generate Vault Passkey
       </button>
 
-      <div id="generated-box" class="hidden items-center gap-2 p-2 bg-slate-950/90 border border-cyan-500/30 rounded-xl shadow-inner">
+      <div id="generated-box" class="hidden items-center gap-2 p-2 bg-slate-950/95 border border-cyan-500/40 rounded-xl shadow-inner">
         <input
           id="generated-input"
           type="text"
@@ -130,7 +149,7 @@
         <button
           id="copy-btn"
           type="button"
-          class="px-4 py-2 rounded-lg font-mono text-xs font-semibold uppercase tracking-wider transition-all duration-150 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 whitespace-nowrap"
+          class="px-4 py-2 rounded-lg font-mono text-xs font-semibold uppercase tracking-wider transition-all duration-150 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 whitespace-nowrap shadow-[0_0_12px_rgba(6,182,212,0.2)]"
         >
           Copy
         </button>
@@ -139,6 +158,62 @@
   </main>
 
   <script>
+    // Particle / Glowing Moving Beam Engine
+    const canvas = document.getElementById('cyberCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2.5 + 1;
+        this.speedX = (Math.random() - 0.5) * 1.2;
+        this.speedY = (Math.random() - 0.5) * 1.2;
+        this.alpha = Math.random() * 0.7 + 0.2;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+          this.reset();
+        }
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(34, 211, 238, ${this.alpha})`;
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = '#22d3ee';
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < 45; i++) {
+      particles.push(new Particle());
+    }
+
+    function render() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(render);
+    }
+    render();
+
+    // Passkey Logic
     const passwordInput = document.getElementById('password-input');
     const strengthLabel = document.getElementById('strength-label');
     const meterContainer = document.getElementById('meter-container');
@@ -148,7 +223,6 @@
     const generatedInput = document.getElementById('generated-input');
     const copyBtn = document.getElementById('copy-btn');
 
-    // Real-time logic flow
     passwordInput.addEventListener('input', (e) => {
       const pwd = e.target.value;
       if (!pwd) {
@@ -164,16 +238,16 @@
 
       let level = 'Weak';
       let colorClass = 'text-rose-400';
-      let barClass = 'w-1/3 bg-rose-500 shadow-[0_0_12px_rgba(244,63,94,0.7)]';
+      let barClass = 'w-1/3 bg-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.8)]';
 
       if (length > 12 && hasLetters && hasNumbers && hasSymbols) {
         level = 'Strong';
         colorClass = 'text-emerald-400';
-        barClass = 'w-full bg-emerald-400 shadow-[0_0_15px_rgba(52,211,153,0.8)]';
+        barClass = 'w-full bg-emerald-400 shadow-[0_0_20px_rgba(52,211,153,0.9)]';
       } else if (hasLetters && hasNumbers && length >= 8) {
         level = 'Medium';
         colorClass = 'text-amber-400';
-        barClass = 'w-2/3 bg-amber-400 shadow-[0_0_12px_rgba(251,191,36,0.7)]';
+        barClass = 'w-2/3 bg-amber-400 shadow-[0_0_15px_rgba(251,191,36,0.8)]';
       }
 
       strengthLabel.textContent = `[ ${level} ]`;
@@ -184,7 +258,6 @@
       meterContainer.classList.remove('hidden');
     });
 
-    // Random generator
     generateBtn.addEventListener('click', () => {
       const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
       const array = new Uint32Array(16);
@@ -196,15 +269,14 @@
       generatedBox.classList.add('flex');
     });
 
-    // Copy to clipboard
     copyBtn.addEventListener('click', async () => {
       if (!generatedInput.value) return;
       await navigator.clipboard.writeText(generatedInput.value);
       copyBtn.textContent = 'Secured!';
-      copyBtn.className = 'px-4 py-2 rounded-lg font-mono text-xs font-semibold uppercase tracking-wider transition-all duration-150 bg-emerald-500/20 text-emerald-300 border border-emerald-500/50';
+      copyBtn.className = 'px-4 py-2 rounded-lg font-mono text-xs font-semibold uppercase tracking-wider transition-all duration-150 bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 shadow-[0_0_15px_rgba(52,211,153,0.4)]';
       setTimeout(() => {
         copyBtn.textContent = 'Copy';
-        copyBtn.className = 'px-4 py-2 rounded-lg font-mono text-xs font-semibold uppercase tracking-wider transition-all duration-150 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30';
+        copyBtn.className = 'px-4 py-2 rounded-lg font-mono text-xs font-semibold uppercase tracking-wider transition-all duration-150 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 shadow-[0_0_12px_rgba(6,182,212,0.2)]';
       }, 2000);
     });
   </script>
