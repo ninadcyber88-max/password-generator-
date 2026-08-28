@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<!-- Password Input -->
-
 <div class="password-checker">
 
     <label for="inputPassword">
@@ -16,10 +13,7 @@
             autocomplete="off"
         >
 
-        <button
-            id="togglePassword"
-            type="button"
-        >
+        <button id="togglePassword" type="button">
             👁️
         </button>
 
@@ -28,12 +22,10 @@
     <div class="strength-container">
 
         <div class="strength-bar">
-
             <div
                 id="inputStrengthBar"
                 class="strength-progress"
             ></div>
-
         </div>
 
         <span id="inputStrengthText">
@@ -42,118 +34,30 @@
 
     </div>
 
+    <button
+        id="hashButton"
+        class="generate-button"
+        type="button"
+    >
+        🔐 Generate SHA-256 Hash
+    </button>
+
+    <div class="password-box hash-output">
+
+        <input
+            type="text"
+            id="hashOutput"
+            readonly
+            placeholder="Generated hash येथे दिसेल"
+        >
+
+        <button
+            id="copyHashButton"
+            type="button"
+        >
+            📋 Copy
+        </button>
+
+    </div>
+
 </div>
-<html lang="mr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Secure Password Generator</title>
-
-    <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-
-    <main class="container">
-
-        <section class="card">
-
-            <div class="icon">🔐</div>
-
-            <h1>Secure Password Generator</h1>
-
-            <p class="subtitle">
-                सुरक्षित Password तयार करा आणि तुमच्या Password ची ताकद तपासा.
-            </p>
-
-            <div class="generator">
-
-                <label for="length">
-                    Password Length
-                </label>
-
-                <div class="length-row">
-
-                    <input
-                        type="range"
-                        id="length"
-                        min="12"
-                        max="32"
-                        value="16"
-                    >
-
-                    <span id="lengthValue">16</span>
-
-                </div>
-
-                <div class="password-box">
-
-                    <input
-                        type="text"
-                        id="password"
-                        readonly
-                        placeholder="Password येथे दिसेल"
-                    >
-
-                    <button
-                        id="copyButton"
-                        type="button"
-                    >
-                        📋 Copy
-                    </button>
-
-                </div>
-
-                <div class="strength-container">
-
-                    <div class="strength-bar">
-
-                        <div
-                            id="strengthBar"
-                            class="strength-progress"
-                        ></div>
-
-                    </div>
-
-                    <span id="strengthText">
-                        Password Strength
-                    </span>
-
-                </div>
-
-                <button
-                    id="generateButton"
-                    class="generate-button"
-                    type="button"
-                >
-                    🔄 Generate Password
-                </button>
-
-            </div>
-
-            <div class="info">
-
-                <h2>🔒 सुरक्षा सूचना</h2>
-
-                <p>
-                    मजबूत Password मध्ये Capital Letters,
-                    Small Letters, Numbers आणि Special Characters
-                    वापरा.
-                </p>
-
-            </div>
-
-            <footer>
-                <p>© 2026 Secure Password Generator</p>
-                <p>By <strong>Ninad Pawar</strong></p>
-            </footer>
-
-        </section>
-
-    </main>
-
-    <script src="script.js"></script>
-
-</body>
-  </html>
