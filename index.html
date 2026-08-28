@@ -112,7 +112,7 @@
       <input
         id="password-input"
         type="text"
-        placeholder="Enter passkey to audit..."
+        placeholder="Enter Original Password..."
         class="w-full px-4 py-3 bg-slate-900/90 border border-slate-700/90 rounded-lg text-cyan-200 placeholder-slate-600 text-sm font-mono focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition shadow-inner"
         autocomplete="off"
         spellcheck="false"
@@ -138,7 +138,7 @@
         Generate Vault Passkey
       </button>
 
-      <p id="error-msg" class="text-xs font-mono text-rose-400 text-center hidden tracking-wider uppercase"></p>
+      <p id="error-msg" class="text-xs font-mono text-rose-400 text-center hidden tracking-wider uppercase font-semibold"></p>
 
       <div id="generated-box" class="hidden items-center gap-2 p-2 bg-slate-950/95 border border-cyan-500/40 rounded-xl shadow-inner">
         <input
@@ -226,7 +226,7 @@
     const copyBtn = document.getElementById('copy-btn');
     const errorMsg = document.getElementById('error-msg');
 
-    // Real-Time Strength Meter (Does NOT alter passwordInput)
+    // Real-Time Strength Meter (Audits input only without modifying it)
     passwordInput.addEventListener('input', (e) => {
       errorMsg.classList.add('hidden');
       const pwd = e.target.value;
@@ -263,7 +263,9 @@
       meterContainer.classList.remove('hidden');
     });
 
-    // Deterministic Cryptographic Key Derivation (Same Input => Identical Secret Passkey)
+    // Deterministic Vault Passkey Derivation:
+    // 1. Same raw password -> Always identical vault passkey
+    // 2. Output is guaranteed to never equal the input password
     async function deriveVaultPasskey(rawPassword) {
       const VAULT_SALT = "CyberShield-Secret-Vault-Salt-Key-2026";
       const encoder = new TextEncoder();
@@ -275,16 +277,16 @@
       const charPool = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=';
       let derivedString = '';
       
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 22; i++) {
         const byte = hashArray[i % hashArray.length];
-        const offset = hashArray[(i + 7) % hashArray.length];
+        const offset = hashArray[(i + 5) % hashArray.length];
         derivedString += charPool[(byte + offset + i) % charPool.length];
       }
       
-      return `SEC#${derivedString}`;
+      return `SEC_${derivedString}`;
     }
 
-    // Button Generator Click Handler
+    // Button Click: Reads input without altering it
     generateBtn.addEventListener('click', async () => {
       const rawPassword = passwordInput.value;
 
@@ -297,7 +299,7 @@
 
       errorMsg.classList.add('hidden');
 
-      // Generate deterministic secret string without modifying passwordInput
+      // Computes deterministic passkey; passwordInput is NOT changed
       const vaultPasskey = await deriveVaultPasskey(rawPassword);
       generatedInput.value = vaultPasskey;
 
@@ -305,7 +307,7 @@
       generatedBox.classList.add('flex');
     });
 
-    // Copy Action
+    // Copy to Clipboard Action
     copyBtn.addEventListener('click', async () => {
       if (!generatedInput.value) return;
       await navigator.clipboard.writeText(generatedInput.value);
