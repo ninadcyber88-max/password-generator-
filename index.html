@@ -57,27 +57,34 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen antialiased selection:bg-cyan-500 selection:text-slate-950 flex items-center justify-center p-4 relative overflow-hidden font-sans">
 
+  <!-- Interactive Canvas Particle Field -->
   <canvas id="cyberCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
 
+  <!-- High-Tech Background Grid -->
   <div class="fixed inset-0 vault-grid pointer-events-none z-0"></div>
 
+  <!-- Dynamic Glowing Cyan Light Orbs -->
   <div class="fixed top-0 left-0 w-[450px] h-[450px] bg-cyan-500/25 rounded-full blur-[130px] pointer-events-none orb-1 z-0"></div>
   <div class="fixed top-0 left-0 w-[500px] h-[500px] bg-teal-400/20 rounded-full blur-[140px] pointer-events-none orb-2 z-0"></div>
   <div class="fixed top-0 left-0 w-[400px] h-[400px] bg-sky-400/20 rounded-full blur-[120px] pointer-events-none orb-3 z-0"></div>
 
+  <!-- Rotating Digital Safe Dial Radar -->
   <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0 opacity-20">
     <div class="w-[580px] h-[580px] border-2 border-dashed border-cyan-400 rounded-full animate-spin-slow flex items-center justify-center shadow-[0_0_50px_rgba(6,182,212,0.3)]">
       <div class="w-[420px] h-[420px] border border-teal-300/40 rounded-full border-t-transparent"></div>
     </div>
   </div>
 
+  <!-- Main Security Safe Card -->
   <main class="w-full max-w-lg border-2 border-cyan-400/40 bg-slate-900/85 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 shadow-[0_0_70px_rgba(6,182,212,0.25)] relative z-10 space-y-7">
     
+    <!-- Neon Corner Bolts -->
     <div class="absolute top-3 left-3 w-2.5 h-2.5 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>
     <div class="absolute top-3 right-3 w-2.5 h-2.5 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>
     <div class="absolute bottom-3 left-3 w-2.5 h-2.5 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>
     <div class="absolute bottom-3 right-3 w-2.5 h-2.5 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>
 
+    <!-- Header / Security Safe Emblem -->
     <header class="space-y-2 text-center">
       <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-cyan-950/80 border border-cyan-400/50 shadow-[0_0_25px_rgba(6,182,212,0.4)] mb-1 text-cyan-300">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -92,6 +99,7 @@
       </p>
     </header>
 
+    <!-- Password Analyzer -->
     <section class="space-y-3 bg-slate-950/70 border border-cyan-500/30 p-4 rounded-xl shadow-inner">
       <div class="flex justify-between items-center text-xs font-mono uppercase tracking-wider text-slate-300">
         <label for="password-input" class="flex items-center gap-1.5">
@@ -117,6 +125,7 @@
       </div>
     </section>
 
+    <!-- Vault Passkey Generator -->
     <section class="space-y-4">
       <button
         id="generate-btn"
@@ -128,6 +137,8 @@
         </svg>
         Generate Vault Passkey
       </button>
+
+      <p id="error-msg" class="text-xs font-mono text-rose-400 text-center hidden tracking-wider uppercase"></p>
 
       <div id="generated-box" class="hidden items-center gap-2 p-2 bg-slate-950/95 border border-cyan-500/40 rounded-xl shadow-inner">
         <input
@@ -213,9 +224,11 @@
     const generatedBox = document.getElementById('generated-box');
     const generatedInput = document.getElementById('generated-input');
     const copyBtn = document.getElementById('copy-btn');
+    const errorMsg = document.getElementById('error-msg');
 
-    // Password Evaluation Flow
+    // Real-Time Strength Meter (Does NOT alter passwordInput)
     passwordInput.addEventListener('input', (e) => {
+      errorMsg.classList.add('hidden');
       const pwd = e.target.value;
       if (!pwd) {
         strengthLabel.classList.add('hidden');
@@ -250,32 +263,49 @@
       meterContainer.classList.remove('hidden');
     });
 
-    // Unique Random Generator (Guaranteed New Output)
-    let previousGenerated = '';
+    // Deterministic Cryptographic Key Derivation (Same Input => Identical Secret Passkey)
+    async function deriveVaultPasskey(rawPassword) {
+      const VAULT_SALT = "CyberShield-Secret-Vault-Salt-Key-2026";
+      const encoder = new TextEncoder();
+      const data = encoder.encode(rawPassword + VAULT_SALT);
+      
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      
+      const charPool = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=';
+      let derivedString = '';
+      
+      for (let i = 0; i < 20; i++) {
+        const byte = hashArray[i % hashArray.length];
+        const offset = hashArray[(i + 7) % hashArray.length];
+        derivedString += charPool[(byte + offset + i) % charPool.length];
+      }
+      
+      return `SEC#${derivedString}`;
+    }
 
-    generateBtn.addEventListener('click', () => {
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
-      const currentInput = passwordInput.value.trim();
-      let pwd = '';
+    // Button Generator Click Handler
+    generateBtn.addEventListener('click', async () => {
+      const rawPassword = passwordInput.value;
 
-      do {
-        const array = new Uint32Array(16);
-        crypto.getRandomValues(array);
-        pwd = Array.from(array, (x) => chars[x % chars.length]).join('');
-      } while (pwd === currentInput || pwd === previousGenerated);
+      if (!rawPassword.trim()) {
+        errorMsg.textContent = "! Enter Original Password";
+        errorMsg.classList.remove('hidden');
+        generatedBox.classList.add('hidden');
+        return;
+      }
 
-      previousGenerated = pwd;
-      generatedInput.value = pwd;
+      errorMsg.classList.add('hidden');
 
-      // Auto-populate analyzer field to update strength rating
-      passwordInput.value = pwd;
-      passwordInput.dispatchEvent(new Event('input'));
+      // Generate deterministic secret string without modifying passwordInput
+      const vaultPasskey = await deriveVaultPasskey(rawPassword);
+      generatedInput.value = vaultPasskey;
 
       generatedBox.classList.remove('hidden');
       generatedBox.classList.add('flex');
     });
 
-    // Copy to Clipboard Action
+    // Copy Action
     copyBtn.addEventListener('click', async () => {
       if (!generatedInput.value) return;
       await navigator.clipboard.writeText(generatedInput.value);
