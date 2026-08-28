@@ -57,34 +57,27 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen antialiased selection:bg-cyan-500 selection:text-slate-950 flex items-center justify-center p-4 relative overflow-hidden font-sans">
 
-  <!-- Interactive Canvas Particle Field -->
   <canvas id="cyberCanvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
 
-  <!-- High-Tech Background Grid -->
   <div class="fixed inset-0 vault-grid pointer-events-none z-0"></div>
 
-  <!-- Dynamic Glowing Cyan Light Orbs -->
   <div class="fixed top-0 left-0 w-[450px] h-[450px] bg-cyan-500/25 rounded-full blur-[130px] pointer-events-none orb-1 z-0"></div>
   <div class="fixed top-0 left-0 w-[500px] h-[500px] bg-teal-400/20 rounded-full blur-[140px] pointer-events-none orb-2 z-0"></div>
   <div class="fixed top-0 left-0 w-[400px] h-[400px] bg-sky-400/20 rounded-full blur-[120px] pointer-events-none orb-3 z-0"></div>
 
-  <!-- Rotating Digital Safe Dial Radar -->
   <div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0 opacity-20">
     <div class="w-[580px] h-[580px] border-2 border-dashed border-cyan-400 rounded-full animate-spin-slow flex items-center justify-center shadow-[0_0_50px_rgba(6,182,212,0.3)]">
       <div class="w-[420px] h-[420px] border border-teal-300/40 rounded-full border-t-transparent"></div>
     </div>
   </div>
 
-  <!-- Main Security Safe Card -->
   <main class="w-full max-w-lg border-2 border-cyan-400/40 bg-slate-900/85 backdrop-blur-2xl rounded-3xl p-6 sm:p-8 shadow-[0_0_70px_rgba(6,182,212,0.25)] relative z-10 space-y-7">
     
-    <!-- Neon Corner Bolts -->
     <div class="absolute top-3 left-3 w-2.5 h-2.5 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>
     <div class="absolute top-3 right-3 w-2.5 h-2.5 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>
     <div class="absolute bottom-3 left-3 w-2.5 h-2.5 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>
     <div class="absolute bottom-3 right-3 w-2.5 h-2.5 rounded-full bg-cyan-300 shadow-[0_0_10px_rgba(34,211,238,1)]"></div>
 
-    <!-- Header / Security Safe Emblem -->
     <header class="space-y-2 text-center">
       <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-cyan-950/80 border border-cyan-400/50 shadow-[0_0_25px_rgba(6,182,212,0.4)] mb-1 text-cyan-300">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -95,11 +88,10 @@
         CyberShield
       </h1>
       <p class="text-xs text-cyan-300/70 font-mono tracking-widest uppercase">
-        [ Secure  Password // VAULT PROTOCOL ]
+        [ SYSTEM ACCESS // VAULT PROTOCOL ]
       </p>
     </header>
 
-    <!-- Password Analyzer -->
     <section class="space-y-3 bg-slate-950/70 border border-cyan-500/30 p-4 rounded-xl shadow-inner">
       <div class="flex justify-between items-center text-xs font-mono uppercase tracking-wider text-slate-300">
         <label for="password-input" class="flex items-center gap-1.5">
@@ -109,14 +101,33 @@
         <span id="strength-label" class="font-bold hidden"></span>
       </div>
 
-      <input
-        id="password-input"
-        type="text"
-        placeholder="Enter Original Password..."
-        class="w-full px-4 py-3 bg-slate-900/90 border border-slate-700/90 rounded-lg text-cyan-200 placeholder-slate-600 text-sm font-mono focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition shadow-inner"
-        autocomplete="off"
-        spellcheck="false"
-      />
+      <div class="relative flex items-center">
+        <input
+          id="password-input"
+          type="password"
+          placeholder="Enter Original Password..."
+          class="w-full pl-4 pr-11 py-3 bg-slate-900/90 border border-slate-700/90 rounded-lg text-cyan-200 placeholder-slate-600 text-sm font-mono focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition shadow-inner tracking-wider"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button
+          id="toggle-pwd-btn"
+          type="button"
+          aria-label="Toggle Password Visibility"
+          class="absolute right-3 p-1 text-slate-400 hover:text-cyan-400 transition-colors focus:outline-none"
+        >
+          <svg id="eye-open" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+          <svg id="eye-closed" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+            <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+            <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+            <line x1="2" x2="22" y1="2" y2="22"/>
+          </svg>
+        </button>
+      </div>
 
       <div id="meter-container" class="space-y-1 pt-1 hidden">
         <div class="w-full h-2 bg-slate-950 border border-slate-800 rounded-full overflow-hidden p-[1px]">
@@ -125,7 +136,6 @@
       </div>
     </section>
 
-    <!-- Vault Passkey Generator -->
     <section class="space-y-4">
       <button
         id="generate-btn"
@@ -160,7 +170,7 @@
   </main>
 
   <script>
-    // Particle / Glowing Moving Beam Engine
+    // Particle Engine
     const canvas = document.getElementById('cyberCanvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
@@ -217,6 +227,9 @@
 
     // DOM Elements
     const passwordInput = document.getElementById('password-input');
+    const togglePwdBtn = document.getElementById('toggle-pwd-btn');
+    const eyeOpen = document.getElementById('eye-open');
+    const eyeClosed = document.getElementById('eye-closed');
     const strengthLabel = document.getElementById('strength-label');
     const meterContainer = document.getElementById('meter-container');
     const meterBar = document.getElementById('meter-bar');
@@ -226,7 +239,21 @@
     const copyBtn = document.getElementById('copy-btn');
     const errorMsg = document.getElementById('error-msg');
 
-    // Real-Time Strength Meter (Audits input only without modifying it)
+    // Toggle Masking / Unmasking Password
+    togglePwdBtn.addEventListener('click', () => {
+      const isPassword = passwordInput.type === 'password';
+      passwordInput.type = isPassword ? 'text' : 'password';
+      
+      if (isPassword) {
+        eyeOpen.classList.remove('hidden');
+        eyeClosed.classList.add('hidden');
+      } else {
+        eyeOpen.classList.add('hidden');
+        eyeClosed.classList.remove('hidden');
+      }
+    });
+
+    // Real-Time Strength Meter
     passwordInput.addEventListener('input', (e) => {
       errorMsg.classList.add('hidden');
       const pwd = e.target.value;
@@ -263,9 +290,7 @@
       meterContainer.classList.remove('hidden');
     });
 
-    // Deterministic Vault Passkey Derivation:
-    // 1. Same raw password -> Always identical vault passkey
-    // 2. Output is guaranteed to never equal the input password
+    // Deterministic Vault Passkey Derivation
     async function deriveVaultPasskey(rawPassword) {
       const VAULT_SALT = "CyberShield-Secret-Vault-Salt-Key-2026";
       const encoder = new TextEncoder();
@@ -286,7 +311,7 @@
       return `SEC_${derivedString}`;
     }
 
-    // Button Click: Reads input without altering it
+    // Button Click: Derives passkey without mutating input
     generateBtn.addEventListener('click', async () => {
       const rawPassword = passwordInput.value;
 
@@ -299,7 +324,6 @@
 
       errorMsg.classList.add('hidden');
 
-      // Computes deterministic passkey; passwordInput is NOT changed
       const vaultPasskey = await deriveVaultPasskey(rawPassword);
       generatedInput.value = vaultPasskey;
 
@@ -307,7 +331,7 @@
       generatedBox.classList.add('flex');
     });
 
-    // Copy to Clipboard Action
+    // Copy Action
     copyBtn.addEventListener('click', async () => {
       if (!generatedInput.value) return;
       await navigator.clipboard.writeText(generatedInput.value);
